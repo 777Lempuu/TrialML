@@ -1,5 +1,5 @@
 import streamlit as st
 
-st.title('🎈 ML TRIAL AGS')
+st.title('seal TRIAL 1')
 
 st.write('FORTIS FORTUNA JUVAT')
