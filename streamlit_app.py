@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="AG News Viewer", layout="wide")
 st.title("📰 AG News Dataset Viewer")
 
-# Load CSV with cache
+# Load CSV from Google Drive
 @st.cache_data
 def load_agnews_csv():
     url = "https://drive.google.com/uc?id=1xr-eyagU6GeZlYpn8qGIuMSdK5WFUV5x"
@@ -13,21 +13,22 @@ def load_agnews_csv():
 
 df = load_agnews_csv()
 
-# Show raw data
+# Drop rows with missing values
+df.dropna(inplace=True)
+
+# Preview
 st.write("### 🔍 Data Preview")
 num_rows = st.slider("Number of rows to display", 5, 100, 10)
 st.dataframe(df.head(num_rows))
 
-# Identify label column
+# Class Distribution Plot
 label_col = 'Class Index' if 'Class Index' in df.columns else df.columns[0]
-text_col = 'Title' if 'Title' in df.columns else df.columns[1]
 
-# Bar plot of class distribution
 st.write("### 📊 Distribution of News Categories")
 
 fig, ax = plt.subplots()
-df[label_col].value_counts().sort_index().plot(kind='bar', color='skyblue', ax=ax)
+df[label_col].value_counts().sort_index().plot(kind='bar', color='salmon', ax=ax)
 ax.set_xlabel("Class Index")
-ax.set_ylabel("Number of Samples")
-ax.set_title("Number of Samples per News Category")
+ax.set_ylabel("Number of Articles")
+ax.set_title("AG News Category Distribution")
 st.pyplot(fig)
